@@ -1,6 +1,8 @@
 package com.moussaba.Fullgestionstock.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.moussaba.Fullgestionstock.model.Adresse;
+import com.moussaba.Fullgestionstock.model.Entreprise;
 import com.moussaba.Fullgestionstock.model.Utilisateur;
 import lombok.Builder;
 import lombok.Data;
@@ -29,5 +31,42 @@ public class EntrepriseDto {
 
     private String siteWeb;
 
+    @JsonIgnore
     private List<UtilisateurDto> utilisateurs;
+
+
+    public static EntrepriseDto fromEntity(Entreprise entreprise){
+        if (entreprise == null){
+            return null;
+        }
+        return EntrepriseDto.builder()
+                .id(entreprise.getId())
+                .nom(entreprise.getNom())
+                .adresse(AdresseDto.fromEntity(entreprise.getAdresse()))
+                .codeFiscal(entreprise.getCodeFiscal())
+                .photo(entreprise.getPhoto())
+                .email(entreprise.getEmail())
+                .numTel(entreprise.getNumTel())
+                .siteWeb(entreprise.getSiteWeb())
+                .build();
+
+    }
+
+    public static Entreprise toEntity(EntrepriseDto entrepriseDto){
+        if (entrepriseDto == null){
+            return null;
+        }
+        Entreprise entreprise = new Entreprise();
+        entreprise.setId(entrepriseDto.getId());
+        entreprise.setNom(entrepriseDto.getNom());
+        entreprise.setAdresse(AdresseDto.toEntity(entrepriseDto.getAdresse()));
+        entreprise.setCodeFiscal(entrepriseDto.getCodeFiscal());
+        entreprise.setPhoto(entrepriseDto.getPhoto());
+        entreprise.setEmail(entrepriseDto.getEmail());
+        entreprise.setNumTel(entrepriseDto.getNumTel());
+        entreprise.setSiteWeb(entrepriseDto.getSiteWeb());
+        return entreprise;
+    }
+
+
 }
